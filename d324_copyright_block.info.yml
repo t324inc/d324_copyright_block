@@ -1,0 +1,9 @@
+name: D324 Copyright Block
+type: module
+description: 'Copyright blocks for use in D324 websites.'
+core: 8.x
+version: 8.x-7.x-dev
+project: d324_copyright_block
+package: D324
+dependencies:
+  - drupal:block
