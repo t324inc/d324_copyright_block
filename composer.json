@@ -1,7 +1,7 @@
 {
   "name": "t324inc/d324_copyright_block",
   "description": "Copyright blocks for use in D324 websites.",
-  "type": "drupal-module",
+  "type": "d324-drupal-module",
   "homepage": "https://github.com/t324inc/d324_copyright_block",
   "license": "GPL-2.0-or-later",
   "minimum-stability": "dev",
