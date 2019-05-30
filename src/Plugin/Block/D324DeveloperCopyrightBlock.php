@@ -82,7 +82,7 @@ class D324DeveloperCopyrightBlock extends BlockBase {
     $t324_link = $t324_link->toRenderable();
     $t324_link['#attributes'] = array(
       'title' => 'T324 : Web Sites - Hosting - Marketing - Technology',
-      'class' => ['no-ext'],
+      'class' => ['no-ext', 'd324-copyright-block__developer-link'],
     );
     $copyrighttext .= render($t324_link);
     return array(
