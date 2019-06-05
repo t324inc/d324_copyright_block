@@ -6,8 +6,9 @@
 
 namespace Drupal\d324_copyright_block\Plugin\Block;
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Render\Markup;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
-use Drupal\Core\Link;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
@@ -21,14 +22,16 @@ use Drupal\Core\Form\FormStateInterface;
  */
 class D324DeveloperCopyrightBlock extends BlockBase {
 
+  use StringTranslationTrait;
+
   /**
    * {@inheritdoc}
    */
   public function defaultConfiguration() {
     $config = [
       'label_display' => FALSE,
-      'd324_copyright_block_developer_name' => 'T324',
       'd324_copyright_block_developer_url' => 'https://www.t324.com',
+      'd324_copyright_block_developer_link_title' => 'T324 - Website Development & Marketing',
     ];
     return $config;
   }
@@ -51,18 +54,18 @@ class D324DeveloperCopyrightBlock extends BlockBase {
     $form['label']['#type'] = 'hidden';
     $form['label_display']['#type'] = 'hidden';
 
-    $form['d324_copyright_block_developer_name'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Developer Name'),
-      '#description' => $this->t('The name of the developer to display in the copyright block.'),
-      '#default_value' => $config['d324_copyright_block_developer_name'],
-    ];
-
     $form['d324_copyright_block_developer_url'] = [
       '#type' => 'url',
       '#title' => $this->t('Developer URL'),
       '#description' => $this->t('The URL of the developer website'),
       '#default_value' => $config['d324_copyright_block_developer_url'],
+    ];
+
+    $form['d324_copyright_block_developer_link_title'] = [
+      '#type' => 'url',
+      '#title' => $this->t('Developer Link Title Text'),
+      '#description' => $this->t('The title attribute of the developer website link'),
+      '#default_value' => $config['d324_copyright_block_developer_link_title'],
     ];
 
     return $form;
@@ -73,21 +76,34 @@ class D324DeveloperCopyrightBlock extends BlockBase {
    */
   public function build() {
     $config = $this->getConfiguration();
-    $developername = $config['d324_copyright_block_developer_name'];
-    $developerurl = $config['d324_copyright_block_developer_url'];
-    $year = date('Y');
-    $copyrighttext = $this->t('Tech and Design © 2003-@year ', array('@year' => $year));
-    $developerurl = Url::fromUri($developerurl);
-    $t324_link = Link::fromTextAndUrl($developername, $developerurl);
-    $t324_link = $t324_link->toRenderable();
-    $t324_link['#attributes'] = array(
-      'title' => 'T324 : Web Sites - Hosting - Marketing - Technology',
-      'class' => ['no-ext', 'd324-copyright-block__developer-link'],
-    );
-    $copyrighttext .= render($t324_link);
+    $developerlinktitle = $config['d324_copyright_block_developer_link_title'];
+    $developerurl = Url::fromUri($config['d324_copyright_block_developer_url']);
+    $copyrighttext = $this->t('Tech and Design © 2003-@year ', array('@year' => date('Y')));
+    $developer_logo = [
+      '#theme' => 'd324_copyright_logo',
+      '#file' => drupal_get_path('module', 'd324_copyright_block') . '/assets/svg/logo.svg'
+    ];
+    $rendered_logo = \Drupal::service('renderer')->render($developer_logo);
+    $developer_link = [
+      '#type' => 'link',
+      '#title' => [
+        '#markup' => Markup::create($rendered_logo),
+      ],
+      '#url' => $developerurl,
+      '#attributes' => [
+        'title' => $developerlinktitle,
+        'class' => ['no-ext', 'd324-copyright-block__developer-link'],
+        'target' => '_blank',
+      ],
+    ];
+    $rendered_link = \Drupal::service('renderer')->render($developer_link);
+    $copyrighttext .= $rendered_link;
     return array(
       '#type' => 'markup',
-      '#markup' => $copyrighttext,
+      '#markup' => Markup::create($copyrighttext),
+      '#attached' => [
+        'library' => 'd324_copyright_block/style',
+      ],
     );
   }
 }

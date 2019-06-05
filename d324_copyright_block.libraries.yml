@@ -1,0 +1,6 @@
+style:
+  version: 1.0
+  css:
+    component:
+      assets/css/d324-copyright-block-style.css: {}
+      
