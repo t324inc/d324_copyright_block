@@ -81,7 +81,7 @@ class D324DeveloperCopyrightBlock extends BlockBase {
     $copyrighttext = $this->t('Tech and Design © 2003-@year ', array('@year' => date('Y')));
     $developer_logo = [
       '#theme' => 'd324_copyright_logo',
-      '#file' => drupal_get_path('module', 'd324_copyright_block') . '/assets/svg/logo.svg'
+      '#file' => '/' . drupal_get_path('module', 'd324_copyright_block') . '/assets/svg/logo.svg'
     ];
     $rendered_logo = \Drupal::service('renderer')->render($developer_logo);
     $developer_link = [
@@ -94,6 +94,7 @@ class D324DeveloperCopyrightBlock extends BlockBase {
         'title' => $developerlinktitle,
         'class' => ['no-ext', 'd324-copyright-block__developer-link'],
         'target' => '_blank',
+        'rel' => 'noopener',
       ],
     ];
     $rendered_link = \Drupal::service('renderer')->render($developer_link);
