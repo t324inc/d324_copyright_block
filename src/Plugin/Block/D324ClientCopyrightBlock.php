@@ -16,7 +16,7 @@ use Drupal\Core\Form\FormStateInterface;
  * @Block(
  *   id = "d324_client_copyright_block",
  *   admin_label = @Translation("D324 Client Copyright block"),
- *   category = @Translation("D324 client copyright block for footer")
+ *   category = @Translation("D324 Blocks")
  * )
  */
 class D324ClientCopyrightBlock extends BlockBase {
